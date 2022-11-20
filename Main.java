@@ -1,15 +1,19 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
+class Inventory {
+  public String name;
+  public String sNum;
+  public int price;
+}
+
 class Main {
   public static void main(String[] args) {
+
     Scanner scanner = new Scanner(System.in);
+    ArrayList<Inventory> allItems = new ArrayList<Inventory>();
 
-    String name, sNum;
-    int order, price;
-    int element = -1;
-
-    ArrayList<Item> allItems = new ArrayList<Item>();
+    int order;
 
     System.out.println("Press 1 to add an item.");
     System.out.println("Press 2 to delete an item.");
@@ -21,58 +25,52 @@ class Main {
     while (order != 5) {
       switch (order) {
         case 1:
+
+          Inventory item = new Inventory();
+
           scanner.nextLine();// consumes /n character left behind by nextInt()
           System.out.println("Enter the name:");
-          name = scanner.nextLine();
+          item.name = scanner.nextLine();
           System.out.println("Enter the serial number:");
-          sNum = scanner.nextLine();
+          item.sNum = scanner.nextLine();
           System.out.println("Enter the value in dollars (whole number):");
-          price = scanner.nextInt();
+          item.price = scanner.nextInt();
           // scanner.nextLine();
 
-          Item item = new Item(name, sNum, price);
           allItems.add(item);
           break;
 
         case 2:
           scanner.nextLine();
-          System.out.println("Enter the serial number of the item to change:");
+          System.out.println("Enter the serial number of the item to delete:");
           String case2String = scanner.nextLine();
-          for (int i = 0; i < allItems.size(); i++) {
-            if (allItems.get(i).getSerialNumber().equals(case2String)) {
-              element = i;
-            }
-          }
-          if (element >= 0)
-            allItems.remove(element);
+
+          allItems.removeIf(n -> n.sNum.equals(case2String));
           break;
 
         case 3:
           scanner.nextLine();
           System.out.println("Enter the serial number of the item to change:");
           String case3String = scanner.nextLine();
-          for (int i = 0; i < allItems.size(); i++) {
-            if (allItems.get(i).getSerialNumber().equals(case3String)) {
-              element = i;
+          for (Inventory i : allItems) {
+            if (i.sNum.equals(case3String)) {
+              System.out.println("Enter the new name:");
+              i.name = scanner.nextLine();
+              System.out.println("Enter the new value in dollars (whole number):");
+              i.price = scanner.nextInt();
             }
           }
-          if (element >= 0) {
-            System.out.println("Enter the new name:");
-            allItems.get(element).setName(scanner.nextLine());
-            System.out.println("Enter the new value in dollars (whole number):");
-            allItems.get(element).setPrice(scanner.nextInt());
-          }
-          scanner.nextLine();
 
+          scanner.nextLine();
           break;
 
         case 4:
           scanner.nextLine();
-          for (int i = 0; i < allItems.size(); i++) {
-            System.out.println(allItems.get(i).toString());
+          for (Inventory i : allItems) {
+            System.out.println(i.name + "," + i.sNum + "," + i.price);
           }
           break;
-          
+
       }
       System.out.println("Press 1 to add an item.");
       System.out.println("Press 2 to delete an item.");
